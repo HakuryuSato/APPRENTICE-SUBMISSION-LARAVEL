@@ -2,19 +2,18 @@
 <html lang="en">
 
 <!-- ヘッド -->
-<x-Head />
+<x-head :title="$title" />
 
 <body>
     <!-- ヘッダー -->
     <x-Header />
 
     <!-- 子要素 -->
-    <div class="container">
-        {{ $slot }}
-    </div>
+    {{ $slot }}
 
     <!-- フッター -->
     <x-Footer />
+
 </body>
 
 </html>
