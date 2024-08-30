@@ -24,10 +24,14 @@ class Article extends Model
     }
 
     // タグを取得
-
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
     }
 
+    // コメントを取得
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

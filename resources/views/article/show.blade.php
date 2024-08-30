@@ -2,29 +2,31 @@
     <div class="article-page">
         <div class="banner">
             <div class="container">
-                <h1>How to build webapps that scale</h1>
+                <h1>{{ $article->title }}</h1>
 
                 <div class="article-meta">
-                    <a href="/profile/eric-simons"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+                    <a href="/profile/{{ $article->user->username }}"><img src="{{ $article->user->profile_image_url }}" /></a>
                     <div class="info">
-                        <a href="/profile/eric-simons" class="author">Eric Simons</a>
-                        <span class="date">January 20th</span>
+                        <a href="/profile/{{ $article->user->username }}" class="author">{{ $article->user->name }}</a>
+                        <span class="date">{{ $article->created_at->format('F jS') }}</span>
                     </div>
                     <button class="btn btn-sm btn-outline-secondary">
                         <i class="ion-plus-round"></i>
-                        &nbsp; Follow Eric Simons <span class="counter">(10)</span>
+                        &nbsp; Follow {{ $article->user->name }} <span class="counter">({{ $article->user->followers_count ?? 0 }})</span>
                     </button>
                     &nbsp;&nbsp;
                     <button class="btn btn-sm btn-outline-primary">
                         <i class="ion-heart"></i>
-                        &nbsp; Favorite Post <span class="counter">(29)</span>
+                        &nbsp; Favorite Post <span class="counter">({{ $article->favorites_count ?? 0 }})</span>
                     </button>
-                    <button class="btn btn-sm btn-outline-secondary">
-                        <i class="ion-edit"></i> Edit Article
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger">
-                        <i class="ion-trash-a"></i> Delete Article
-                    </button>
+                    @if (auth()->check() && auth()->id() === $article->user_id)
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="ion-edit"></i> Edit Article
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger">
+                            <i class="ion-trash-a"></i> Delete Article
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -32,15 +34,15 @@
         <div class="container page">
             <div class="row article-content">
                 <div class="col-md-12">
-                    <p>
-                        Web development technologies have evolved at an incredible clip over the past few years.
-                    </p>
-                    <h2 id="introducing-ionic">Introducing RealWorld.</h2>
-                    <p>It's a great solution for learning how other frameworks work.</p>
-                    <ul class="tag-list">
-                        <li class="tag-default tag-pill tag-outline">realworld</li>
-                        <li class="tag-default tag-pill tag-outline">implementations</li>
-                    </ul>
+                    <p>{{ $article->body }}</p>
+
+                    @if ($article->tags->isNotEmpty())
+                        <ul class="tag-list">
+                            @foreach ($article->tags as $tag)
+                                <li class="tag-default tag-pill tag-outline">{{ $tag->name }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             </div>
 
@@ -48,30 +50,25 @@
 
             <div class="article-actions">
                 <div class="article-meta">
-                    <a href="profile.html"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+                    <a href="/profile/{{ $article->user->username }}"><img src="{{ $article->user->profile_image_url }}" /></a>
                     <div class="info">
-                        <a href="" class="author">Eric Simons</a>
-                        <span class="date">January 20th</span>
+                        <a href="/profile/{{ $article->user->username }}" class="author">{{ $article->user->name }}</a>
+                        <span class="date">{{ $article->created_at->format('F jS') }}</span>
                     </div>
 
                     <button class="btn btn-sm btn-outline-secondary">
                         <i class="ion-plus-round"></i>
-                        &nbsp; Follow Eric Simons
+                        &nbsp; Follow {{ $article->user->name }}
                     </button>
                     &nbsp;
                     <button class="btn btn-sm btn-outline-primary">
                         <i class="ion-heart"></i>
-                        &nbsp; Favorite Article <span class="counter">(29)</span>
-                    </button>
-                    <button class="btn btn-sm btn-outline-secondary">
-                        <i class="ion-edit"></i> Edit Article
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger">
-                        <i class="ion-trash-a"></i> Delete Article
+                        &nbsp; Favorite Article <span class="counter">({{ $article->favorites_count ?? 0 }})</span>
                     </button>
                 </div>
             </div>
 
+            {{-- コメントフォームとコメントの表示 --}}
             <div class="row">
                 <div class="col-xs-12 col-md-8 offset-md-2">
                     <form class="card comment-form">
@@ -79,45 +76,31 @@
                             <textarea class="form-control" placeholder="Write a comment..." rows="3"></textarea>
                         </div>
                         <div class="card-footer">
-                            <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
+                            <img src="{{ auth()->user()->profile_image_url ?? 'http://i.imgur.com/Qr71crq.jpg' }}" class="comment-author-img" />
                             <button class="btn btn-sm btn-primary">Post Comment</button>
                         </div>
                     </form>
 
-                    <div class="card">
-                        <div class="card-block">
-                            <p class="card-text">
-                                With supporting text below as a natural lead-in to additional content.
-                            </p>
+                    @foreach ($article->comments as $comment)
+                        <div class="card">
+                            <div class="card-block">
+                                <p class="card-text">{{ $comment->body }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/profile/{{ $comment->user->username }}" class="comment-author">
+                                    <img src="{{ $comment->user->profile_image_url }}" class="comment-author-img" />
+                                </a>
+                                &nbsp;
+                                <a href="/profile/{{ $comment->user->username }}" class="comment-author">{{ $comment->user->name }}</a>
+                                <span class="date-posted">{{ $comment->created_at->format('F jS') }}</span>
+                                @if (auth()->check() && auth()->id() === $comment->user_id)
+                                    <span class="mod-options">
+                                        <i class="ion-trash-a"></i>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <a href="/profile/author" class="comment-author">
-                                <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-                            </a>
-                            &nbsp;
-                            <a href="/profile/jacob-schmidt" class="comment-author">Jacob Schmidt</a>
-                            <span class="date-posted">Dec 29th</span>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-block">
-                            <p class="card-text">
-                                With supporting text below as a natural lead-in to additional content.
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="/profile/author" class="comment-author">
-                                <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-                            </a>
-                            &nbsp;
-                            <a href="/profile/jacob-schmidt" class="comment-author">Jacob Schmidt</a>
-                            <span class="date-posted">Dec 29th</span>
-                            <span class="mod-options">
-                                <i class="ion-trash-a"></i>
-                            </span>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

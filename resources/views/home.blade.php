@@ -22,33 +22,33 @@
                     </div>
 
                     @foreach ($articles as $article)
-                        <div class="article-preview">
-                            <div class="article-meta">
-                                <a href="/profile/{{ $article->user->username }}"><img src="{{ $article->user->profile_image_url }}" /></a>
-                                <div class="info">
-                                    <a href="/profile/{{ $article->user->username }}" class="author">{{ $article->user->name }}</a>
-                                    <span class="date">{{ $article->created_at->format('F jS') }}</span>
-                                </div>
-                                <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                                    <i class="ion-heart"></i> {{ $article->favorites_count }}
-                                </button>
+                    <div class="article-preview">
+                        <div class="article-meta">
+                            <a href="/profile/{{ $article->user->username }}"><img src="{{ $article->user->profile_image_url }}" /></a>
+                            <div class="info">
+                                <a href="/profile/{{ $article->user->username }}" class="author">{{ $article->user->name }}</a>
+                                <span class="date">{{ $article->created_at->format('F jS') }}</span>
                             </div>
-                            <a href="/article/{{ $article->slug }}" class="preview-link">
-                                <h1>{{ $article->title }}</h1>
-                                <p>{{ $article->description }}</p>
-                                <span>Read more...</span>
-                                @if ($article->tags->isNotEmpty())
-                                    <ul class="tag-list">
-                                        @foreach ($article->tags as $tag)
-                                            <li class="tag-default tag-pill tag-outline">{{ $tag->name }}</li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            </a>
+                            <button class="btn btn-outline-primary btn-sm pull-xs-right">
+                                <i class="ion-heart"></i> {{ $article->favorites_count ?? 0 }}
+                            </button>
                         </div>
+                        <a href="/article/{{ $article->slug }}" class="preview-link">
+                            <h1>{{ $article->title }}</h1>
+                            <p>{{ $article->description ?? 'No description available' }}</p>
+                            <span>Read more...</span>
+                            @if ($article->tags->isNotEmpty())
+                            <ul class="tag-list">
+                                @foreach ($article->tags as $tag)
+                                <li class="tag-default tag-pill tag-outline">{{ $tag->name }}</li>
+                                @endforeach
+                            </ul>
+                            @endif
+                        </a>
+                    </div>
                     @endforeach
 
-                    {{ $articles->links() }}
+                    <!-- {{ $articles->links() }} -->
                 </div>
 
                 <div class="col-md-3">
