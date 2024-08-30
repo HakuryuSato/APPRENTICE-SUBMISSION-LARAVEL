@@ -43,6 +43,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'profile_picture_url' => 'http://i.imgur.com/Qr71crq.jpg',
         ]);
 
         Auth::login($user);

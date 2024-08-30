@@ -10,7 +10,7 @@ use App\Http\Controllers\ArticleController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // 記事
-route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
+Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
 Route::post('/article', [ArticleController::class, 'store'])->middleware('auth')->name('article.store');
 Route::put('/article/{slug}', [ArticleController::class, 'update'])->middleware('auth')->name('article.update');
 Route::delete('/article/{slug}', [ArticleController::class, 'destroy'])->middleware('auth')->name('article.delete');
