@@ -1,4 +1,4 @@
-<x-layouts.app :title="'Home'">
+<x-app-layout :title="'Home'">
     <div class="home-page">
         <div class="banner">
             <div class="container">
@@ -70,4 +70,4 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-app-layout>

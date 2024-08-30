@@ -1,4 +1,4 @@
-<x-layouts.app :title="'register'">
+<x-app-layout :title="'register">
   <div class="auth-page">
     <div class="container page">
       <div class="row">
@@ -20,7 +20,7 @@
           <form method="POST" action="{{ route('register') }}">
             @csrf
             <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="text" name="user_name" placeholder="Username" value="{{ old('user_name') }}" />
+              <input class="form-control form-control-lg" type="text" name="name" placeholder="Name" value="{{ old('name') }}" />
             </fieldset>
             <fieldset class="form-group">
               <input class="form-control form-control-lg" type="email" name="email" placeholder="Email" value="{{ old('email') }}" />
@@ -34,4 +34,4 @@
       </div>
     </div>
   </div>
-</x-layouts.app>
+</x-app-layout>

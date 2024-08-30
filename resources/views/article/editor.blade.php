@@ -1,4 +1,4 @@
-<x-layouts.app :title="'Create/Edit'">
+<x-app-layout :title="'Create/Edit'">
     <div class="editor-page">
         <div class="container page">
             <div class="row">
@@ -36,4 +36,4 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-app-layout>

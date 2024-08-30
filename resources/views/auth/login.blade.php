@@ -1,4 +1,4 @@
-<x-layouts.app :title="'login'">
+<x-app-layout :title="'login'">
   <div class="auth-page">
     <div class="container page">
       <div class="row">
@@ -25,4 +25,4 @@
       </div>
     </div>
   </div>
-</x-layouts.app>
+</x-app-layout>

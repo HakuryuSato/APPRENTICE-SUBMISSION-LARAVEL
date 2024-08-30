@@ -1,3 +1,4 @@
+<x-app-layout :title="'Setting'">
 <div class="settings-page">
   <div class="container page">
     <div class="row">
@@ -42,3 +43,4 @@
     </div>
   </div>
 </div>
+</x-app-layout>

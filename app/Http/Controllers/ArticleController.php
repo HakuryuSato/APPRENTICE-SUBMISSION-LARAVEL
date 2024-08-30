@@ -19,7 +19,7 @@ class ArticleController extends Controller
 
     public function create()
     {
-        return view('editor');
+        return view('article.editor');
     }
 
     public function edit($slug)

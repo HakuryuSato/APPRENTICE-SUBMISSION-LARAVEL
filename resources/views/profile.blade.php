@@ -1,3 +1,4 @@
+<x-app-layout :title="'Profile'">
 <div class="profile-page">
   <div class="user-info">
     <div class="container">
@@ -92,3 +93,4 @@
     </div>
   </div>
 </div>
+</x-app-layout>
