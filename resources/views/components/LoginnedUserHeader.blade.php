@@ -20,8 +20,8 @@
       </li>
       <li class="nav-item">
         <!-- ログインユーザーのプロフィールページへのリンク -->
-        <a class="nav-link {{ request()->is('profile/' . Auth::user()->username) ? 'active' : '' }}" href="{{ route('profile.show', ['username' => Auth::user()->username]) }}">
-          <img src="{{ Auth::user()->profile_picture_url }}" class="user-pic" alt="User Picture" />
+        <a class="nav-link {{ request()->is('profile/' . Auth::user()->name) ? 'active' : '' }}" href="{{ route('profile.show', ['username' => Auth::user()->name]) }}">
+          <img src="{{ Auth::user()->profile_picture_url }}" class="user-pic" alt="" />
           {{ Auth::user()->name }}
         </a>
       </li>
