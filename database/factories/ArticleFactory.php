@@ -21,6 +21,7 @@ class ArticleFactory extends Factory
             'title' => $this->faker->sentence,
             'slug' => Str::slug($this->faker->sentence),
             'body' => $this->faker->paragraphs(3, true),
+            'description' => $this->faker->sentence,
             'user_id' => \App\Models\User::factory(),
         ];
     }

@@ -16,8 +16,8 @@ Route::put('/article/{slug}', [ArticleController::class, 'update'])->middleware(
 Route::delete('/article/{slug}', [ArticleController::class, 'destroy'])->middleware('auth')->name('article.delete');
 
 // 著者
-Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
-Route::get('/profile/{username}/favorites', [ProfileController::class, 'favorites'])->name('profile.favorites');
+Route::get('/profile/{name}', [ProfileController::class, 'show'])->name('profile.show');
+// Route::get('/profile/{name}/favorites', [ProfileController::class, 'favorites'])->name('profile.favorites');
 
 
 // ログイン

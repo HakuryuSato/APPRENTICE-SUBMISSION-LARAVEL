@@ -5,18 +5,18 @@
                 <div class="col-md-10 offset-md-1 col-xs-12">
                     <!-- エラーメッセージの表示 -->
                     @if ($errors->any())
-                        <ul class="error-messages">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                    <ul class="error-messages">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                     @endif
 
                     <!-- 記事の作成/編集フォーム -->
                     <form method="POST" action="{{ isset($article) ? route('article.update', ['slug' => $article->slug]) : route('article.store') }}">
                         @csrf
                         @if(isset($article))
-                            @method('PUT')
+                        @method('PUT')
                         @endif
                         <fieldset>
                             <fieldset class="form-group">
@@ -32,11 +32,11 @@
                                 <input type="text" name="tags" class="form-control" placeholder="Enter tags" value="{{ old('tags', $article->tags ?? '') }}" />
                                 <div class="tag-list">
                                     @if(isset($article) && $article->tags)
-                                        @foreach(explode(',', $article->tags) as $tag)
-                                            <span class="tag-default tag-pill">
-                                                <i class="ion-close-round"></i> {{ $tag }}
-                                            </span>
-                                        @endforeach
+                                    @foreach(explode(',', $article->tags) as $tag)
+                                    <span class="tag-default tag-pill">
+                                        <i class="ion-close-round"></i> {{ $tag }}
+                                    </span>
+                                    @endforeach
                                     @endif
                                 </div>
                             </fieldset>

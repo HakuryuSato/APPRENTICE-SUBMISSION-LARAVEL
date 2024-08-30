@@ -1,4 +1,4 @@
-<x-app-layout :title="'register">
+<x-app-layout :title="'register'">
   <div class="auth-page">
     <div class="container page">
       <div class="row">

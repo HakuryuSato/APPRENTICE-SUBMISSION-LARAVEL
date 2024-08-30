@@ -1,4 +1,4 @@
-<x-layouts.app :title="'Article'">
+<x-app-layout :title="'Article'">
     <div class="article-page">
         <div class="banner">
             <div class="container">
@@ -19,14 +19,25 @@
                         <i class="ion-heart"></i>
                         &nbsp; Favorite Post <span class="counter">({{ $article->favorites_count ?? 0 }})</span>
                     </button>
+
+                    <!-- もし自分の記事なら編集可能 -->
                     @if (auth()->check() && auth()->id() === $article->user_id)
-                        <button class="btn btn-sm btn-outline-secondary">
-                            <i class="ion-edit"></i> Edit Article
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger">
+                    
+                    <!-- 編集ボタン -->
+                    <a href="{{ route('editor.edit', ['slug' => $article->slug]) }}" class="btn btn-sm btn-outline-secondary">
+                        <i class="ion-edit"></i> Edit Article
+                    </a>
+
+                    <!-- 削除ボタン -->
+                    <form action="{{ route('article.delete', ['slug' => $article->slug]) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
                             <i class="ion-trash-a"></i> Delete Article
                         </button>
+                    </form>
                     @endif
+
                 </div>
             </div>
         </div>
@@ -35,13 +46,12 @@
             <div class="row article-content">
                 <div class="col-md-12">
                     <p>{{ $article->body }}</p>
-
                     @if ($article->tags->isNotEmpty())
-                        <ul class="tag-list">
-                            @foreach ($article->tags as $tag)
-                                <li class="tag-default tag-pill tag-outline">{{ $tag->name }}</li>
-                            @endforeach
-                        </ul>
+                    <ul class="tag-list">
+                        @foreach ($article->tags as $tag)
+                        <li class="tag-default tag-pill tag-outline">{{ $tag->name }}</li>
+                        @endforeach
+                    </ul>
                     @endif
                 </div>
             </div>
@@ -82,27 +92,27 @@
                     </form>
 
                     @foreach ($article->comments as $comment)
-                        <div class="card">
-                            <div class="card-block">
-                                <p class="card-text">{{ $comment->body }}</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="/profile/{{ $comment->user->username }}" class="comment-author">
-                                    <img src="{{ $comment->user->profile_image_url }}" class="comment-author-img" />
-                                </a>
-                                &nbsp;
-                                <a href="/profile/{{ $comment->user->username }}" class="comment-author">{{ $comment->user->name }}</a>
-                                <span class="date-posted">{{ $comment->created_at->format('F jS') }}</span>
-                                @if (auth()->check() && auth()->id() === $comment->user_id)
-                                    <span class="mod-options">
-                                        <i class="ion-trash-a"></i>
-                                    </span>
-                                @endif
-                            </div>
+                    <div class="card">
+                        <div class="card-block">
+                            <p class="card-text">{{ $comment->body }}</p>
                         </div>
+                        <div class="card-footer">
+                            <a href="/profile/{{ $comment->user->username }}" class="comment-author">
+                                <img src="{{ $comment->user->profile_image_url }}" class="comment-author-img" />
+                            </a>
+                            &nbsp;
+                            <a href="/profile/{{ $comment->user->username }}" class="comment-author">{{ $comment->user->name }}</a>
+                            <span class="date-posted">{{ $comment->created_at->format('F jS') }}</span>
+                            @if (auth()->check() && auth()->id() === $comment->user_id)
+                            <span class="mod-options">
+                                <i class="ion-trash-a"></i>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
                     @endforeach
                 </div>
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-app-layout>
