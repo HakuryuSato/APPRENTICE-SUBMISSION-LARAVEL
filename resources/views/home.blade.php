@@ -1,4 +1,4 @@
-<x-layouts.app :title="'Home'">
+<x-app-layout :title="'Home'">
     <div class="home-page">
         <div class="banner">
             <div class="container">
@@ -21,58 +21,34 @@
                         </ul>
                     </div>
 
+                    @foreach ($articles as $article)
                     <div class="article-preview">
                         <div class="article-meta">
-                            <a href="/profile/eric-simons"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+                            <a href="/profile/{{ $article->user->username }}"><img src="{{ $article->user->profile_image_url }}" /></a>
                             <div class="info">
-                                <a href="/profile/eric-simons" class="author">Eric Simons</a>
-                                <span class="date">January 20th</span>
+                                <a href="/profile/{{ $article->user->username }}" class="author">{{ $article->user->name }}</a>
+                                <span class="date">{{ $article->created_at->format('F jS') }}</span>
                             </div>
                             <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                                <i class="ion-heart"></i> 29
+                                <i class="ion-heart"></i> {{ $article->favorites_count ?? 0 }}
                             </button>
                         </div>
-                        <a href="/article/how-to-build-webapps-that-scale" class="preview-link">
-                            <h1>How to build webapps that scale</h1>
-                            <p>This is the description for the post.</p>
+                        <a href="/article/{{ $article->slug }}" class="preview-link">
+                            <h1>{{ $article->title }}</h1>
+                            <p>{{ $article->description ?? 'No description available' }}</p>
                             <span>Read more...</span>
+                            @if ($article->tags->isNotEmpty())
                             <ul class="tag-list">
-                                <li class="tag-default tag-pill tag-outline">realworld</li>
-                                <li class="tag-default tag-pill tag-outline">implementations</li>
+                                @foreach ($article->tags as $tag)
+                                <li class="tag-default tag-pill tag-outline">{{ $tag->name }}</li>
+                                @endforeach
                             </ul>
+                            @endif
                         </a>
                     </div>
+                    @endforeach
 
-                    <div class="article-preview">
-                        <div class="article-meta">
-                            <a href="/profile/albert-pai"><img src="http://i.imgur.com/N4VcUeJ.jpg" /></a>
-                            <div class="info">
-                                <a href="/profile/albert-pai" class="author">Albert Pai</a>
-                                <span class="date">January 20th</span>
-                            </div>
-                            <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                                <i class="ion-heart"></i> 32
-                            </button>
-                        </div>
-                        <a href="/article/the-song-you" class="preview-link">
-                            <h1>The song you won't ever stop singing. No matter how hard you try.</h1>
-                            <p>This is the description for the post.</p>
-                            <span>Read more...</span>
-                            <ul class="tag-list">
-                                <li class="tag-default tag-pill tag-outline">realworld</li>
-                                <li class="tag-default tag-pill tag-outline">implementations</li>
-                            </ul>
-                        </a>
-                    </div>
-
-                    <ul class="pagination">
-                        <li class="page-item active">
-                            <a class="page-link" href="">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="">2</a>
-                        </li>
-                    </ul>
+                    <!-- {{ $articles->links() }} -->
                 </div>
 
                 <div class="col-md-3">
@@ -94,4 +70,4 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-app-layout>
