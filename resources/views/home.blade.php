@@ -24,9 +24,12 @@
                     @foreach ($articles as $article)
                     <div class="article-preview">
                         <div class="article-meta">
-                            <a href="/profile/{{ $article->user->username }}"><img src="{{ $article->user->profile_image_url }}" /></a>
+                            <!-- ユーザーのプロフィールページへのリンク -->
+                            <a href="{{ route('profile.show', ['name' => $article->user->name]) }}">
+                                <img src="{{ $article->user->profile_image_url }}" />
+                            </a>
                             <div class="info">
-                                <a href="/profile/{{ $article->user->username }}" class="author">{{ $article->user->name }}</a>
+                                <a href="{{ route('profile.show', ['name' => $article->user->name]) }}" class="author">{{ $article->user->name }}</a>
                                 <span class="date">{{ $article->created_at->format('F jS') }}</span>
                             </div>
                             <button class="btn btn-outline-primary btn-sm pull-xs-right">
@@ -48,6 +51,7 @@
                     </div>
                     @endforeach
 
+
                     <!-- {{ $articles->links() }} -->
                 </div>
 
@@ -56,14 +60,9 @@
                         <p>Popular Tags</p>
 
                         <div class="tag-list">
-                            <a href="" class="tag-pill tag-default">programming</a>
-                            <a href="" class="tag-pill tag-default">javascript</a>
-                            <a href="" class="tag-pill tag-default">emberjs</a>
-                            <a href="" class="tag-pill tag-default">angularjs</a>
-                            <a href="" class="tag-pill tag-default">react</a>
-                            <a href="" class="tag-pill tag-default">mean</a>
-                            <a href="" class="tag-pill tag-default">node</a>
-                            <a href="" class="tag-pill tag-default">rails</a>
+                            @foreach ($tags as $tag)
+                            <a href="" class="tag-pill tag-default">{{ $tag->name }}</a>
+                            @endforeach
                         </div>
                     </div>
                 </div>

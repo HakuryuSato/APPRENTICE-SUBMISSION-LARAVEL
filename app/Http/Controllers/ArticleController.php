@@ -17,13 +17,13 @@ class ArticleController extends Controller
         return view('article.show', compact('article')); 
     }
 
-    // 新しい記事の作成フォームを表示
+    // 記事作成フォームを表示
     public function create()
     {
         return view('article.editor');
     }
 
-    // 既存の記事の編集フォームを表示
+    // 記事編集フォームを表示
     public function edit($slug)
     {
         $article = Article::where('slug', $slug)->firstOrFail();
@@ -86,4 +86,6 @@ class ArticleController extends Controller
 
         return redirect()->route('home')->with('status', 'Article deleted successfully');
     }
+
+    
 }

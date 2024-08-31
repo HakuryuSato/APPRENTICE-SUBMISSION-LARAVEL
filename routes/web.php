@@ -9,6 +9,7 @@ use App\Http\Controllers\ArticleController;
 // ホーム
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+
 // 記事
 Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
 Route::post('/article', [ArticleController::class, 'store'])->middleware('auth')->name('article.store');
@@ -34,7 +35,7 @@ Route::get('/editor/{slug}', [ArticleController::class, 'edit'])->middleware('au
 
 
 // Comments
-// Route::post('/article/{slug}/comment', [CommentController::class, 'store'])->middleware('auth')->name('comment.store');
-// Route::delete('/article/{slug}/comment/{id}', [CommentController::class, 'destroy'])->middleware('auth')->name('comment.delete');
+Route::post('/article/{slug}/comment', [CommentController::class, 'store'])->middleware('auth')->name('comment.store');
+Route::delete('/article/{slug}/comment/{id}', [CommentController::class, 'destroy'])->middleware('auth')->name('comment.delete');
 
 
