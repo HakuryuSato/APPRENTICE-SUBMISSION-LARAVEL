@@ -5,9 +5,11 @@
                 <h1>{{ $article->title }}</h1>
 
                 <div class="article-meta">
-                    <a href="/profile/{{ $article->user->username }}"><img src="{{ $article->user->profile_image_url }}" /></a>
+                    <a href="{{ route('profile.show', ['name' => $article->user->name]) }}">
+                        <img src="{{ $article->user->profile_image_url }}" />
+                    </a>
                     <div class="info">
-                        <a href="/profile/{{ $article->user->username }}" class="author">{{ $article->user->name }}</a>
+                        <a href="{{ route('profile.show', ['name' => $article->user->name]) }}" class="author">{{ $article->user->name }}</a>
                         <span class="date">{{ $article->created_at->format('F jS') }}</span>
                     </div>
                     <button class="btn btn-sm btn-outline-secondary">
@@ -81,7 +83,8 @@
             {{-- コメントフォームとコメントの表示 --}}
             <div class="row">
                 <div class="col-xs-12 col-md-8 offset-md-2">
-                    <form class="card comment-form" action="{{ route('comments.store', $article->id) }}" method="POST">
+                    @if(auth()->check())
+                    <form class="card comment-form" method="POST" action="{{ route('articles.addComment', $article->slug) }}">
                         @csrf
                         <div class="card-block">
                             <textarea name="body" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
@@ -91,6 +94,7 @@
                             <button type="submit" class="btn btn-sm btn-primary">Post Comment</button>
                         </div>
                     </form>
+                    @endif
                 </div>
 
                 @foreach ($article->comments as $comment)
@@ -105,11 +109,7 @@
                         &nbsp;
                         <a href="/profile/{{ $comment->user->username }}" class="comment-author">{{ $comment->user->name }}</a>
                         <span class="date-posted">{{ $comment->created_at->format('F jS') }}</span>
-                        @if (auth()->check() && auth()->id() === $comment->user_id)
-                        <span class="mod-options">
-                            <i class="ion-trash-a"></i>
-                        </span>
-                        @endif
+
                     </div>
                 </div>
                 @endforeach

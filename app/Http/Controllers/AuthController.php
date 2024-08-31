@@ -30,7 +30,7 @@ class AuthController extends Controller
     
         // 認証試行
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate(); // セッションの再生成
+            $request->session()->regenerate();
             return redirect()->intended(route('home'));
         }
     
