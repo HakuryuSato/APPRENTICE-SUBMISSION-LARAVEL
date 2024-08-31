@@ -5,9 +5,11 @@
                 <h1>{{ $article->title }}</h1>
 
                 <div class="article-meta">
-                    <a href="/profile/{{ $article->user->username }}"><img src="{{ $article->user->profile_image_url }}" /></a>
+                    <a href="{{ route('profile.show', ['name' => $article->user->name]) }}">
+                        <img src="{{ $article->user->profile_image_url }}" />
+                    </a>
                     <div class="info">
-                        <a href="/profile/{{ $article->user->username }}" class="author">{{ $article->user->name }}</a>
+                        <a href="{{ route('profile.show', ['name' => $article->user->name]) }}" class="author">{{ $article->user->name }}</a>
                         <span class="date">{{ $article->created_at->format('F jS') }}</span>
                     </div>
                     <button class="btn btn-sm btn-outline-secondary">
@@ -22,7 +24,7 @@
 
                     <!-- もし自分の記事なら編集可能 -->
                     @if (auth()->check() && auth()->id() === $article->user_id)
-                    
+
                     <!-- 編集ボタン -->
                     <a href="{{ route('editor.edit', ['slug' => $article->slug]) }}" class="btn btn-sm btn-outline-secondary">
                         <i class="ion-edit"></i> Edit Article
@@ -81,38 +83,38 @@
             {{-- コメントフォームとコメントの表示 --}}
             <div class="row">
                 <div class="col-xs-12 col-md-8 offset-md-2">
-                    <form class="card comment-form">
+                    @if(auth()->check())
+                    <form class="card comment-form" method="POST" action="{{ route('articles.addComment', $article->slug) }}">
+                        @csrf
                         <div class="card-block">
-                            <textarea class="form-control" placeholder="Write a comment..." rows="3"></textarea>
+                            <textarea name="body" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
                         </div>
                         <div class="card-footer">
                             <img src="{{ auth()->user()->profile_image_url ?? 'http://i.imgur.com/Qr71crq.jpg' }}" class="comment-author-img" />
-                            <button class="btn btn-sm btn-primary">Post Comment</button>
+                            <button type="submit" class="btn btn-sm btn-primary">Post Comment</button>
                         </div>
                     </form>
-
-                    @foreach ($article->comments as $comment)
-                    <div class="card">
-                        <div class="card-block">
-                            <p class="card-text">{{ $comment->body }}</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="/profile/{{ $comment->user->username }}" class="comment-author">
-                                <img src="{{ $comment->user->profile_image_url }}" class="comment-author-img" />
-                            </a>
-                            &nbsp;
-                            <a href="/profile/{{ $comment->user->username }}" class="comment-author">{{ $comment->user->name }}</a>
-                            <span class="date-posted">{{ $comment->created_at->format('F jS') }}</span>
-                            @if (auth()->check() && auth()->id() === $comment->user_id)
-                            <span class="mod-options">
-                                <i class="ion-trash-a"></i>
-                            </span>
-                            @endif
-                        </div>
-                    </div>
-                    @endforeach
+                    @endif
                 </div>
+
+                @foreach ($article->comments as $comment)
+                <div class="card">
+                    <div class="card-block">
+                        <p class="card-text">{{ $comment->body }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/profile/{{ $comment->user->username }}" class="comment-author">
+                            <img src="{{ $comment->user->profile_image_url }}" class="comment-author-img" />
+                        </a>
+                        &nbsp;
+                        <a href="/profile/{{ $comment->user->username }}" class="comment-author">{{ $comment->user->name }}</a>
+                        <span class="date-posted">{{ $comment->created_at->format('F jS') }}</span>
+
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
+    </div>
     </div>
 </x-app-layout>

@@ -22,7 +22,22 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // ログインロジックをここに記述
+        // バリデーション
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+    
+        // 認証試行
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('home'));
+        }
+    
+        // 認証失敗時
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     public function register(Request $request)
@@ -43,6 +58,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'profile_picture_url' => 'http://i.imgur.com/Qr71crq.jpg',
         ]);
 
         Auth::login($user);
