@@ -4,24 +4,36 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+
 
 
 class AuthTest extends TestCase
 {
-    use RefreshDatabase;
+    
+
+    private $userData;
+
+    // 初期化処理
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // ユーザー登録用のデータを初期化
+        $this->userData = [
+            'name' => 'Test User',
+            'email' => 'testuser@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password', // パスワード確認フィールドを追加
+        ];
+    }
 
     // ユーザー登録が可能かテスト
     #[Test]
     public function user_can_register()
     {
-        $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'testuser@example.com',
-            'password' => 'password',
-        ]);
+        $response = $this->post('/register', $this->userData);
 
-        $response->assertRedirect('/');
-        $this->assertDatabaseHas('users', ['email' => 'testuser@example.com']);
+        $response->assertRedirect('/'); // ホームページへのリダイレクトを期待
+        $this->assertDatabaseHas('users', ['email' => $this->userData['email']]);
     }
 }

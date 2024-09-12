@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Article;
 
@@ -12,13 +11,11 @@ use App\Models\Article;
 class CommentTest extends TestCase
 {
     
-    // 初期化
-    use RefreshDatabase;
-
     private $user;
     private $article;
     private $testComment;
 
+    // 初期化処理
     public function setUp(): void
     {
         parent::setUp();
