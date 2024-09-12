@@ -5,12 +5,9 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-
-
 class AuthTest extends TestCase
 {
     
-
     private $userData;
 
     // 初期化処理
